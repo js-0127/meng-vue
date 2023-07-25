@@ -1,6 +1,6 @@
 import { extend } from "../shared";
 
-class reactiveEffect {
+export class reactiveEffect {
     //传入effect的函数
     private _fn: any;
     //控制是否stop做清空处理
