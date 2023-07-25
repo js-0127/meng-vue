@@ -9,7 +9,6 @@ class reactiveEffect {
     deps: any = [];
     //stop之后的回调
     onStop?: () => void
-
     constructor(fn, public scheduler?: Function) {
         this._fn = fn
         this.scheduler = scheduler
@@ -65,26 +64,37 @@ export function track(target, key) {
     if (!activeEffect) return;
     //如果不要收集依赖，这里直接返回
     if (!shouldTrack) return;*/
-    if (!isTrack(activeEffect, shouldTrack)) return
+    trackEffect(dep)
+}
+export function trackEffect(dep) {
+    if (!isTrack()) return
     //收集依赖, 我们需要拿到fn 如果依赖中存在activeEffect 就直接return 不再收集了
     if (dep.has(activeEffect)) return
     dep.add(activeEffect)
     //这里我们将
     activeEffect.deps.push(dep)
 }
-
-function isTrack(activeEffect, shouldTrack) {
+export function isTrack() {
     return shouldTrack && activeEffect
 }
 export function trigger(target, key) {
     const depMap = targetMap.get(target)
-    const deps = depMap.get(key)
-
-    for (const dep of deps) {
-        if (dep.scheduler) {
-            dep.scheduler()
+    const dep = depMap.get(key)
+    for (const effect of dep) {
+        if (effect.scheduler) {
+            effect.scheduler()
         } else {
-            dep.run()
+            effect.run()
+        }
+    }
+
+}
+export function tiggerEffect(dep) {
+    for (const effect of dep) {
+        if (effect.scheduler) {
+            effect.scheduler()
+        } else {
+            effect.run()
         }
     }
 }
@@ -94,6 +104,7 @@ let activeEffect
 export function effect(fn, options: any = {}) {
     const _effect = new reactiveEffect(fn, options.schdeuler)
     extend(_effect, options)
+    // Object.assign(_effect, options)
     _effect.run()
 
     const runner: any = _effect.run.bind(_effect)

@@ -33,14 +33,12 @@ describe("effect", () => {
     it('schdeuler', () => {
         let dummy: any
         let run: any
-
         const schdeuler = jest.fn(() => {
             run = runner
         })
         const obj = reactive({
             foo: 1
         })
-
         const runner = effect(() => {
             dummy = obj.foo
         }, { schdeuler })
@@ -48,7 +46,6 @@ describe("effect", () => {
         expect(schdeuler).not.toHaveBeenCalled();
         expect(dummy).toBe(1)
         obj.foo++
-
         expect(schdeuler).toHaveBeenCalledTimes(1)
         expect(dummy).toBe(1)
         run()
