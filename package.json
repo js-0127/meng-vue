@@ -2,9 +2,14 @@
   "name": "reactive",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "type": "module",
+  "main": "lib/guide-meng-vue.cjs.js",
+  "module": "lib/guide-meng-vue.esm.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "build": "rollup -c rollup.config.js",
+    "prepare": "husky install",
+    "commitlint": "commitlint --config commitlint.config.cjs -e -V"
   },
   "keywords": [],
   "author": "",
@@ -12,12 +17,18 @@
   "dependencies": {
     "@types/jest": "^29.5.3",
     "jest": "^29.6.1",
+    "rollup": "^3.27.0",
+    "tslib": "^2.6.1",
     "typescript": "^5.1.6"
   },
   "devDependencies": {
     "@babel/core": "^7.22.9",
     "@babel/preset-env": "^7.22.9",
     "@babel/preset-typescript": "^7.22.5",
-    "babel-jest": "^29.6.1"
+    "@commitlint/cli": "^17.6.7",
+    "@commitlint/config-conventional": "^17.6.7",
+    "@rollup/plugin-typescript": "^11.1.2",
+    "babel-jest": "^29.6.1",
+    "husky": "^8.0.0"
   }
 }
