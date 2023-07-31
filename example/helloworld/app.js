@@ -1,7 +1,10 @@
 import { h } from '../../lib/guide-meng-vue.esm.js'
+
+window.self = null
 export const App = {
 
     render() {
+        window.self = this
         return h("div",
 
             {

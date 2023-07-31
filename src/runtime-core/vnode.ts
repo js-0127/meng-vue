@@ -1,8 +1,10 @@
 
 export function createVNode(type, props?, children?) {
-    return {
+    const vNode = {
         type,
         props,
-        children
+        children,
+        el: null
     }
+    return vNode
 }

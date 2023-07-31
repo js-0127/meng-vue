@@ -29,11 +29,12 @@ function processElement(vNode, container) {
 
 function mountElement(vNode, container) {
 
+    const { type, props, children } = vNode
     //type就是元素类型
-    const el = document.createElement(vNode.type)
+    const el = (vNode.el = document.createElement(type))
 
     //children就是el的值如果是基本类型就这样处理， 如果children是Array代表有后代，就用另外一种方式
-    const { children } = vNode
+
     if (typeof children === 'string') {
         el.textContent = children
     } else if (Array.isArray(children)) {
@@ -41,7 +42,7 @@ function mountElement(vNode, container) {
     }
 
     //props就是属性
-    const { props } = vNode
+
     for (const key in props) {
         const val = props[key]
         el.setAttribute(key, val)
@@ -61,16 +62,17 @@ function processComponent(vNode, container) {
     mountComponent(vNode, container)
 }
 
-function mountComponent(vNode, container) {
-    const instance = createComponentInstance(vNode)
+function mountComponent(initialVnode, container) {
+    const instance = createComponentInstance(initialVnode)
 
     setupComponentInstance(instance)
-    setupRenderEffect(instance, container)
+    setupRenderEffect(instance, initialVnode, container)
 }
 
-function setupRenderEffect(instance, container) {
+function setupRenderEffect(instance, initialVnode, container) {
     const { proxy } = instance
     const subTree = instance.render.call(proxy)
     //vnode -> patch -> Mountelement
     patch(subTree, container)
+    initialVnode.el = subTree.el
 } 
