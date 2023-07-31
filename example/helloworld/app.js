@@ -7,13 +7,17 @@ export const App = {
             {
                 id: 'root',
                 class: ["red", "layhead"]
-            }
-            , [h("p", { class: "red" }, "red"), h("p", { class: 'blue' }, "blue")])
+            },
+            //数组类型的children时
+            // , [h("p", { class: "red" }, "red"), h("p", { class: 'blue' }, "blue")]
+            //普通类型
+            "hi," + this.msg
+        )
     },
 
     setup() {
         return {
-            msg: 'meng-vue'
+            msg: 'meng-vue!'
         }
     }
 }

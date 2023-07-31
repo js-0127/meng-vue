@@ -1,7 +1,8 @@
 export function createComponentInstance(vNode) {
     const component = {
         vNode,
-        type: vNode.type
+        type: vNode.type,
+        proxy: {}
     }
     return component
 }
@@ -19,6 +20,15 @@ function setupStatefulComponent(instance) {
 
     const component = instance.type
 
+    instance.proxy = new Proxy(instance, {
+        get(target, key) {
+            //setupState
+            const { setupState } = instance
+            if (key in setupState) {
+                return setupState[key]
+            }
+        }
+    })
     const { setup } = component
 
     if (setup) {
@@ -43,7 +53,6 @@ function handlerSetupResult(instance, setupResult) {
 
 function finishComponentSetup(instance) {
     const component = instance.type
-    console.log(component);
 
     instance.render = component.render
 

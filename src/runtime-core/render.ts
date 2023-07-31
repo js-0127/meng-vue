@@ -14,8 +14,6 @@ function patch(vNode, container) {
 
     //可以log一下vNode看看类型 是object->组件 是string -> element
 
-    console.log(vNode.type);
-
     if (typeof vNode.type === 'string') {
         processElement(vNode, container)
     } else if (isObject(vNode.type)) {
@@ -71,7 +69,8 @@ function mountComponent(vNode, container) {
 }
 
 function setupRenderEffect(instance, container) {
-    const subTree = instance.render()
+    const { proxy } = instance
+    const subTree = instance.render.call(proxy)
     //vnode -> patch -> Mountelement
     patch(subTree, container)
 } 
